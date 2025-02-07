@@ -3,26 +3,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@drawable/fondo">
+
+    >
 
     <!-- Título de la actividad -->
     <TextView
         android:id="@+id/tvTituloCitas"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mis Citas Programadas"
-        android:textSize="24sp"
-        android:textStyle="bold"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginBottom="16dp"
+        android:background="#2260FF"
+        android:textAlignment="center"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:text="Mis Citas"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:fontFamily="@font/light"
+
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:text="Acá podrá ver las citas que tendrá en los próximos días, además de las citas que ya recibió. "
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+
 
     <!-- RecyclerView para mostrar las citas -->
     <androidx.recyclerview.widget.RecyclerView
+        android:gravity="center"
         android:id="@+id/recyclerViewCitas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp" />
+        android:padding="16dp" />
 
 
 </LinearLayout>
