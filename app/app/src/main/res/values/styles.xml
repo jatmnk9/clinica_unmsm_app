@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="colorbutton">colorbutton
+        <item name="android:backgroundTint">@color/light_blue</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Personaliza el color del calendario -->
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:colorAccent">@color/white</item>
+    </style>
+</resources>

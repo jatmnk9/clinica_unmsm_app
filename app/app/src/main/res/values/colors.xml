@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="blue">#2196F3</color>
+    <color name="light_blue">#ADD8E6</color>
+    <color name="calendar_day_color">#FF0000</color> <!-- Rojo para los días -->
+    <color name="calendar_background_color">#FFFFFF</color> <!-- Fondo blanco -->
+    <color name="primaryColor">#6200EE</color> <!-- Color principal -->
+    <color name="lightBackground">#F5F5F5</color> <!-- Fondo suave -->
+
+
+</resources>
