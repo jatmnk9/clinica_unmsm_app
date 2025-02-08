@@ -1,4 +1,5 @@
 package com.example.proyectocita
+
 import android.content.Intent
 import android.app.TimePickerDialog
 import android.os.Bundle
@@ -15,9 +16,6 @@ import android.app.AlertDialog
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
-
-
 
 class BomberoActivity : AppCompatActivity() {
     private lateinit var citaDao: CitaDao
@@ -30,17 +28,14 @@ class BomberoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bomberomenuactivity)
-        // Botón de regreso
+
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
-        btnBack.setOnClickListener {
-            finish() // Cierra esta actividad y regresa a la anterior
-        }
+        btnBack.setOnClickListener { finish() }
 
         // Inicializar base de datos
         citadatabase = CitaDatabase.getInstance(this)
         citaDao = citadatabase.citaDao()
         doctorDao = citadatabase.doctorDao()
-
 
         // Inicializar vistas
         calendarView = findViewById(R.id.calendarView)
@@ -49,12 +44,8 @@ class BomberoActivity : AppCompatActivity() {
         // Obtener la especialidad desde el Intent
         especialidad = intent.getStringExtra("especialidad") ?: ""
 
-        // Inicializar doctores
         inicializarDoctores()
-
-        // Cargar doctores según la especialidad
         cargarDoctoresPorEspecialidad()
-
 
         // Configurar CalendarView
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
@@ -63,7 +54,6 @@ class BomberoActivity : AppCompatActivity() {
         }
     }
 
-    // Método corregido para insertar los doctores
     private fun inicializarDoctores() {
         lifecycleScope.launch {
             try {
@@ -84,82 +74,27 @@ class BomberoActivity : AppCompatActivity() {
                         Doctor(nombre = "Dr. Pablo Sánchez", especialidad = "Medicina Familiar"),
                         Doctor(nombre = "Dra. Susana Gómez", especialidad = "Medicina Familiar")
                     )
-
-                    // Ahora insertamos la lista completa de doctores
                     withContext(Dispatchers.IO) {
-                        doctorDao.insertarDoctores(doctores) // Correcto: insertar toda la lista de una sola vez
+                        doctorDao.insertarDoctores(doctores)
                     }
                 }
+
             } catch (e: Exception) {
-                e.printStackTrace()
                 Log.e("BomberoActivity", "Error al inicializar doctores: ${e.message}")
                 Toast.makeText(this@BomberoActivity, "Error al inicializar doctores", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-/*
     private fun cargarDoctoresPorEspecialidad() {
-        Log.d("BomberoActivity", "Especialidad: $especialidad")
         lifecycleScope.launch {
             try {
-                // Obtener doctores según especialidad
-                val doctores = withContext(Dispatchers.IO) {
-                    doctorDao.obtenerDoctoresPorEspecialidad(especialidad)
-
-                }
-
-                // Verificar si existen doctores para la especialidad
-                if (doctores.isNotEmpty()) {
-                    val nombresDoctores = doctores.map { it.nombre }
-                    val adapter = ArrayAdapter(
-                        this@BomberoActivity,
-                        android.R.layout.simple_spinner_item,
-                        nombresDoctores
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
-                } else {
-                    // Mostrar mensaje de no disponibilidad
-                    Toast.makeText(
-                        this@BomberoActivity,
-                        "No hay doctores disponibles para $especialidad",
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    // Si no hay doctores, agregar un mensaje al spinner
-                    val adapter = ArrayAdapter(
-                        this@BomberoActivity,
-                        android.R.layout.simple_spinner_item,
-                        listOf("No hay doctores disponibles")
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(
-                    this@BomberoActivity,
-                    "Error al cargar doctores",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
-*/
-/*
-    private fun cargarDoctoresPorEspecialidad() {
-        Log.d("BomberoActivity", "Especialidad: $especialidad")
-
-        lifecycleScope.launch {
-            try {
-                // Obtener doctores según la especialidad desde la base de datos
                 val doctores = withContext(Dispatchers.IO) {
                     doctorDao.obtenerDoctoresPorEspecialidad(especialidad)
                 }
 
                 val nombresDoctores = if (doctores.isNotEmpty()) {
-                    listOf("Elegir doctor") + doctores.map { it.nombre }
+                    doctores.map { it.nombre }
                 } else {
                     listOf("No hay doctores disponibles")
                 }
@@ -171,91 +106,14 @@ class BomberoActivity : AppCompatActivity() {
                 )
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 spinner.adapter = adapter
-
-                // Si no hay doctores, deshabilitar el spinner
                 spinner.isEnabled = doctores.isNotEmpty()
 
             } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(
-                    this@BomberoActivity,
-                    "Error al cargar doctores",
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(this@BomberoActivity, "Error al cargar doctores", Toast.LENGTH_LONG).show()
             }
         }
     }
-*/
 
-    private fun cargarDoctoresPorEspecialidad() {
-        Log.d("BomberoActivity", "Especialidad: $especialidad")
-
-        lifecycleScope.launch {
-            try {
-                // Obtener doctores según la especialidad desde la base de datos
-                val doctores = withContext(Dispatchers.IO) {
-                    doctorDao.obtenerDoctoresPorEspecialidad(especialidad)
-                }
-
-                if (doctores.isNotEmpty()) {
-                    val nombresDoctores = doctores.map { it.nombre }
-
-                    val adapter = ArrayAdapter(
-                        this@BomberoActivity,
-                        android.R.layout.simple_spinner_item,
-                        nombresDoctores
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
-                    spinner.isEnabled = true
-                } else {
-                    // Si no hay doctores, mostrar mensaje y deshabilitar el spinner
-                    val adapter = ArrayAdapter(
-                        this@BomberoActivity,
-                        android.R.layout.simple_spinner_item,
-                        listOf("No hay doctores disponibles")
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    spinner.adapter = adapter
-                    spinner.isEnabled = false
-                }
-
-                // Validar selección del doctor
-                spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        if (!spinner.isEnabled) {
-                            Toast.makeText(
-                                this@BomberoActivity,
-                                "No hay doctores disponibles",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        Toast.makeText(
-                            this@BomberoActivity,
-                            "Debes seleccionar un doctor",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(
-                    this@BomberoActivity,
-                    "Error al cargar doctores",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-    }
     // 1. Declarar las variables de clase
     private var selectedMinute: Int = 0
     private var adjustedMinute: Int = 0
@@ -313,26 +171,35 @@ class BomberoActivity : AppCompatActivity() {
                 }
 
                 if (citaExistente == null) {
-                    // La cita no existe, se puede guardar
                     guardarCitaEnBaseDeDatos(fecha, hora)
                 } else {
-                    // La cita ya existe, mostrar mensaje de no disponible
                     Toast.makeText(this@BomberoActivity, "No disponible para la fecha y hora seleccionada", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
                 Toast.makeText(this@BomberoActivity, "Error al verificar disponibilidad", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    private fun obtenerUsuarioCedulaActual(): String? {
+        val sharedPreferences = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
+        return sharedPreferences.getString("usuarioCedula", null)
+    }
+
     private fun guardarCitaEnBaseDeDatos(fecha: String, hora: String) {
+        val usuarioCedula = obtenerUsuarioCedulaActual()
+        if (usuarioCedula.isNullOrEmpty()) {
+            Toast.makeText(this, "Error: No se encontró la cédula del usuario", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val cita = Cita(
             fecha = fecha,
             hora = hora,
-            id = 0, // Generar un ID único
+            id = 0,
             nombreDoctor = spinner.selectedItem.toString(),
-            especialidad = especialidad
+            especialidad = especialidad,
+            usuarioId = obtenerUsuarioCedulaActual() ?: ""
         )
 
         lifecycleScope.launch {
@@ -368,10 +235,4 @@ class BomberoActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
-
 }
-
-

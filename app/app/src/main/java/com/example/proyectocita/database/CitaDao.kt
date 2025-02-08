@@ -24,6 +24,10 @@ interface CitaDao {
     @Query("DELETE FROM citas WHERE id = :citaId")
     suspend fun eliminarCitaPorId(citaId: Int)
 
+    @Query("SELECT * FROM citas WHERE usuarioId = :usuarioId")
+    suspend fun obtenerCitasPorUsuario(usuarioId: String?): List<Cita>
+
+
     @Query("SELECT * FROM citas WHERE fecha = :fecha AND hora = :hora AND nombreDoctor = :nombreDoctor")
     suspend fun obtenerCitaPorFechaHoraDoctor(fecha: String, hora: String, nombreDoctor: String): Cita?
 

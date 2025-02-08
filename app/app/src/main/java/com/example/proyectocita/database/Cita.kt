@@ -13,5 +13,7 @@ data class Cita(
     val fecha: String,
     val hora: String,
     val nombreDoctor: String,
-    val especialidad: String
+    val especialidad: String,
+    val usuarioId: String // <- Revisa que este sea el nombre correcto
 ) : Parcelable
+

@@ -1,6 +1,7 @@
 package com.example.proyectocita
 
 import CitasAdapter
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,38 +17,59 @@ import kotlinx.coroutines.withContext
 class CitasActivity : AppCompatActivity() {
 
     private lateinit var citaDao: CitaDao
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.citas_activity)
 
+        // Inicializar SharedPreferences
+        sharedPreferences = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
+
         // Inicializar la base de datos y el DAO
         val citaDatabase = CitaDatabase.getInstance(this)
         citaDao = citaDatabase.citaDao()
 
-        // Llamar al método para cargar las citas desde la base de datos
+        // Cargar citas según el tipo de usuario
         cargarCitas()
     }
 
     private fun cargarCitas() {
         lifecycleScope.launch {
             val citasCargadas = withContext(Dispatchers.IO) {
-                citaDao.obtenerTodasLasCitas()
+                if (verificarSiEsAdministrador()) {
+                    citaDao.obtenerTodasLasCitas() // El administrador ve todas las citas
+                } else {
+                    val usuarioCedula = obtenerUsuarioCedulaActual()
+                    if (usuarioCedula != null) {
+                        citaDao.obtenerCitasPorUsuario(usuarioCedula) // El usuario normal solo ve sus citas
+                    } else {
+                        emptyList() // En caso de error, mostrar lista vacía
+                    }
+                }
             }
 
             // Configurar RecyclerView con las citas cargadas
             val recyclerView: RecyclerView = findViewById(R.id.recyclerViewCitas)
             recyclerView.layoutManager = LinearLayoutManager(this@CitasActivity)
 
-            // Pasar la función onCitaSelected
             recyclerView.adapter = CitasAdapter(citasCargadas) { cita ->
-                // Aquí defines qué hacer cuando se selecciona una cita
-                // Por ejemplo, podrías mostrar un mensaje o abrir una nueva actividad
-                Toast.makeText(this@CitasActivity, "Cita seleccionada: ${cita.fecha} a las ${cita.hora}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@CitasActivity,
+                    "Cita seleccionada: ${cita.fecha} a las ${cita.hora}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
-}
 
+    private fun obtenerUsuarioCedulaActual(): String? {
+        return sharedPreferences.getString("usuarioCedula", null)
+    }
+
+    private fun verificarSiEsAdministrador(): Boolean {
+        return sharedPreferences.getBoolean("esAdministrador", false)
+    }
+}
 
 

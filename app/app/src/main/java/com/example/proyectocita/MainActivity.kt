@@ -1,17 +1,23 @@
 package com.example.proyectocita
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.proyectocita.database.CitaDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var sharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -21,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val tvCreatePassword = findViewById<TextView>(R.id.tvCreatePassword)
 
+        // Inicializar SharedPreferences
+        sharedPreferences = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
+
         // Instancia de la base de datos
         val db = CitaDatabase.getInstance(this)
 
@@ -28,28 +37,31 @@ class MainActivity : AppCompatActivity() {
             val username = etUsername.text.toString().trim()
             val password = etPassword.text.toString().trim()
 
-            // Validar entrada
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Verificar si el usuario es "Administrador" y la clave es "1234"
+            // Verificar si el usuario es "Administrador"
             if (username == "Administrador" && password == "1234") {
-                val intent = Intent(this@MainActivity, Administrador::class.java)
-                startActivity(intent)
-                finish() // Termina la actividad de login para no permitir volver atrás
+                guardarUsuarioEnSesion("admin", true) // Se guarda como "admin"
+                startActivity(Intent(this@MainActivity, Administrador::class.java))
+                finish()
                 return@setOnClickListener
             }
 
-            // Verificar usuario y contraseña en la base de datos
+            // Verificar usuario en la base de datos
             lifecycleScope.launch {
-                val usuario = db.usuarioDao().getUsuarioByCedula(password) // Buscar por cédula
+                val usuario = withContext(Dispatchers.IO) {
+                    db.usuarioDao().getUsuarioByCedula(password)
+                }
+
                 if (usuario != null && usuario.nombres.equals(username, ignoreCase = true)) {
+                    guardarUsuarioEnSesion(usuario.cedula, false) // Guardamos la cédula
                     runOnUiThread {
                         Toast.makeText(this@MainActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@MainActivity, MenuActivity::class.java)
-                        startActivity(intent)
+                        startActivity(Intent(this@MainActivity, MenuActivity::class.java))
+                        finish()
                     }
                 } else {
                     runOnUiThread {
@@ -60,8 +72,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         tvCreatePassword.setOnClickListener {
-            val intent = Intent(this, CreateAccountActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CreateAccountActivity::class.java))
         }
+    }
+
+    private fun guardarUsuarioEnSesion(cedula: String, esAdministrador: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putString("usuarioCedula", cedula) // Guardamos la cédula en lugar de ID
+        editor.putBoolean("esAdministrador", esAdministrador)
+        editor.apply()
     }
 }

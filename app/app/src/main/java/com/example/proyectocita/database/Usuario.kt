@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "usuarios")
 data class Usuario(
-    @PrimaryKey val cedula: String,
+    @PrimaryKey val cedula: String, // Se quita autoGenerate = true
     val nombres: String,
     val apellidos: String,
     val tipoCuent: String, // Tipo de cuenta
