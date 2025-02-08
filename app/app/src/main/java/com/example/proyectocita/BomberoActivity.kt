@@ -30,6 +30,11 @@ class BomberoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.bomberomenuactivity)
+        // Botón de regreso
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            finish() // Cierra esta actividad y regresa a la anterior
+        }
 
         // Inicializar base de datos
         citadatabase = CitaDatabase.getInstance(this)
