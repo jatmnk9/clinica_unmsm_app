@@ -36,7 +36,7 @@
             android:fontFamily="@font/semi_bold"
             android:gravity="center"
             android:paddingEnd="22dp"
-            android:text="Programación Médica"
+            android:text="Reserva tu Cita"
             android:textColor="@android:color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
