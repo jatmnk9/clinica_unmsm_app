@@ -5,4 +5,17 @@
         <item>Administrador</item>
         <item>Externo</item>
     </string-array>
+
+    <string-array name="especialidades">
+        <item>Medicina General</item>
+        <item>Psicología</item>
+        <item>Odontología</item>
+        <item>Ginecología</item>
+        <item>Medicina Familiar</item>
+
+    </string-array>
 </resources>
+
+
+
+

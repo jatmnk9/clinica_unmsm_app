@@ -23,7 +23,7 @@
         </activity>
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".MenuActivity" />
-        <activity android:name=".PoliceActivity" />
+        <activity android:name=".ProgramarCitaActivity" />
         <activity android:name=".TransitoActivity" />
         <activity android:name=".CitasActivity" />
         <activity android:name=".SaludActivity" />

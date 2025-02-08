@@ -17,7 +17,7 @@ class MenuActivity : AppCompatActivity() {
 
 
         btncita.setOnClickListener {
-            val intent = Intent(this, PoliceActivity::class.java)
+            val intent = Intent(this, ProgramarCitaActivity::class.java)
             startActivity(intent)
         }
         btncitapro.setOnClickListener {
