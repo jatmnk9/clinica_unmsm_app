@@ -1,3 +1,5 @@
+![Logo de Curita SM](clinica_unmsm_app/app/app/src/main/res/drawable/logo.png)
+
 # Curita SM
 
 Curita SM es una aplicación móvil desarrollada como parte del curso de Desarrollo Móvil de la Universidad Nacional Mayor de San Marcos (UNMSM). La aplicación está diseñada para la Clínica Universitaria con el objetivo de mejorar la gestión y acceso a servicios de salud.
