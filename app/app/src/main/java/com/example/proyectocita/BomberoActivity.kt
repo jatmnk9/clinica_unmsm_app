@@ -62,6 +62,7 @@ class BomberoActivity : AppCompatActivity() {
                 }
 
                 if (doctoresExistentes.isEmpty()) {
+
                     val doctores = listOf(
                         Doctor(nombre = "Dr. Juan Pérez", especialidad = "Medicina General"),
                         Doctor(nombre = "Dra. María López", especialidad = "Medicina General"),
