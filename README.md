@@ -37,7 +37,7 @@ Curita SM es una aplicación móvil que busca optimizar la atención médica uni
 
 1. Clonar este repositorio:
    ```bash
-   git clone ...
+   git clone [...](https://github.com/jatmnk9/clinica_unmsm_app.git)
    ```
 2. Instalar dependencias:
    ```bash
