@@ -1,4 +1,4 @@
-![Logo de Curita SM](clinica_unmsm_app/app/app/src/main/res/drawable/logo.png)
+![Logo de Curita SM](clinica_unmsm_app/app/app/src/main/res/drawable/group_93.png)
 
 # Curita SM
 
