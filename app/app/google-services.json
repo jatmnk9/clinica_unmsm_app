@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113522271713",
+    "project_id": "curita-san-marcos",
+    "storage_bucket": "curita-san-marcos.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113522271713:android:243cb8a234ab1f6a3bdea0",
+        "android_client_info": {
+          "package_name": "com.example.proyectocita"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATCUgAvU4Z4cslb4kjuV5sRMLXPMvcOws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
