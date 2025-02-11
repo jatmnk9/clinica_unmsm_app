@@ -4,7 +4,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectocita.R
-import com.example.proyectocita.database.Cita
 
 class CitasAdapter(
     private val citas: List<Cita>,

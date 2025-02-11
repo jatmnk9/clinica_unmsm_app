@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.example.proyectocita.database.CitaDatabase
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {

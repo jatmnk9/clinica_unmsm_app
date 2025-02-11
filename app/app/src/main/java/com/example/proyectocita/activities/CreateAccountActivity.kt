@@ -9,8 +9,6 @@ import android.widget.RadioGroup
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
-import com.example.proyectocita.database.CitaDatabase
-import com.example.proyectocita.database.Usuario
 import kotlinx.coroutines.launch
 
 class CreateAccountActivity : AppCompatActivity() {
