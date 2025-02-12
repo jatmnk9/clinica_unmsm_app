@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import CitaAdapter
+import android.widget.ImageButton
 
 class SaludActivity : AppCompatActivity() {
 
@@ -27,6 +28,8 @@ class SaludActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.saludmenuactivity)
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener { finish() }
 
         sharedPreferences = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
         val citaDatabase = CitaDatabase.getInstance(this)
