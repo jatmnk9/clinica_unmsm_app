@@ -1,6 +1,6 @@
 package com.example.proyectocita
 
-import CitasAdapter
+import CitaAdapter
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageButton
@@ -57,7 +57,7 @@ class CitasActivity : AppCompatActivity() {
             val recyclerView: RecyclerView = findViewById(R.id.recyclerViewCitas)
             recyclerView.layoutManager = LinearLayoutManager(this@CitasActivity)
 
-            recyclerView.adapter = CitasAdapter(citasCargadas) { cita ->
+            recyclerView.adapter = CitaAdapter(citasCargadas) { cita ->
                 Toast.makeText(
                     this@CitasActivity,
                     "Cita seleccionada: ${cita.fecha} a las ${cita.hora}",

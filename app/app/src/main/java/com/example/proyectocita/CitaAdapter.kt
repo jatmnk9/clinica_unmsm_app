@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.proyectocita.R
 import com.example.proyectocita.database.Cita
 
-class CitasAdapter(
+class CitaAdapter(
     private val citas: List<Cita>,
     private val onCitaSelected: (Cita) -> Unit
-) : RecyclerView.Adapter<CitasAdapter.CitaViewHolder>() {
+) : RecyclerView.Adapter<CitaAdapter.CitaViewHolder>() {
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
