@@ -3,6 +3,7 @@ package com.example.proyectocita
 import CitasAdapter
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -22,9 +23,12 @@ class CitasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.citas_activity)
-
+        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener { finish() }
         // Inicializar SharedPreferences
         sharedPreferences = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
+
+
 
         // Inicializar la base de datos y el DAO
         val citaDatabase = CitaDatabase.getInstance(this)
