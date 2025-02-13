@@ -8,7 +8,6 @@
 
 
     <TextView
-
         android:id="@+id/tvDoctor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,9 +16,16 @@
         android:padding="4dp"
         android:textColor="#2260FF" />
 
+    <TextView
+        android:id="@+id/tvUsuario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:padding="4dp" />
+
 
     <TextView
-
         android:id="@+id/tvEspecialidad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

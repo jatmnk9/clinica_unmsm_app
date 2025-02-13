@@ -46,6 +46,7 @@ class CitaAdapter(
             itemView.findViewById<TextView>(R.id.tvFecha).text = cita.fecha
             itemView.findViewById<TextView>(R.id.tvHora).text = cita.hora
             itemView.findViewById<TextView>(R.id.tvDoctor).text = cita.nombreDoctor
+            itemView.findViewById<TextView>(R.id.tvUsuario).text = cita.usuarioId
             itemView.findViewById<TextView>(R.id.tvEspecialidad).text = cita.especialidad
         }
     }

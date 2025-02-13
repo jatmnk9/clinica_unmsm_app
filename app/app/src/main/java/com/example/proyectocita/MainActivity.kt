@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 if (usuario != null && usuario.nombres.equals(username, ignoreCase = true)) {
-                    guardarUsuarioEnSesion(usuario.cedula, false) // Guardamos la cédula
+                    guardarUsuarioEnSesion(usuario.nombres, false) // Guardamos la cédula
                     runOnUiThread {
                         Toast.makeText(this@MainActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@MainActivity, MenuActivity::class.java))
