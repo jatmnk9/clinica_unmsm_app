@@ -22,6 +22,7 @@ abstract class CitaDatabase : RoomDatabase() {
                     CitaDatabase::class.java,
                     "citas_database"
                 )
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance

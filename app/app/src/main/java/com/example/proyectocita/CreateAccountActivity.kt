@@ -36,8 +36,7 @@ class CreateAccountActivity : AppCompatActivity() {
             val cellphone = etCellphone.text.toString()
             val disabilityType = "No"
             val bloodType = spBloodType.text.toString()
-            val allergies = "No"
-            val illnesses = "No"
+
 
             if (cedu.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty() &&
                 tipodecuenta.isNotEmpty() && cellphone.isNotEmpty()) {
@@ -50,9 +49,7 @@ class CreateAccountActivity : AppCompatActivity() {
                     tipoCuent = tipodecuenta,
                     celular = cellphone,
                     grupoSanguineo = disabilityType,
-                    tipoDiscapacidad = bloodType,
-                    alergias = allergies,
-                    enfermedades = illnesses
+                    tipoDiscapacidad = bloodType
                 )
 
                 // Guardar en la base de datos usando una coroutine
