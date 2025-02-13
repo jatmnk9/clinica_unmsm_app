@@ -13,8 +13,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
 import android.app.AlertDialog
-import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 
 class BomberoActivity : AppCompatActivity() {
@@ -27,7 +25,7 @@ class BomberoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.bomberomenuactivity)
+        setContentView(R.layout.calendario_activity)
 
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
         btnBack.setOnClickListener { finish() }
