@@ -10,32 +10,32 @@ import androidx.recyclerview.widget.RecyclerView
 
 class ChatbotActivity : AppCompatActivity() {
 
-    private lateinit var recyclerViewMessages: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     private lateinit var editTextMessage: EditText
     private lateinit var buttonSend: Button
-    private val messages = mutableListOf<String>()
-    private lateinit var adapter: ChatAdapter
+    private val messages = mutableListOf<Message>()
+    private lateinit var adapter: MessageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chatbot)
 
-        recyclerViewMessages = findViewById(R.id.recyclerViewMessages)
+        recyclerView = findViewById(R.id.recyclerViewMessages)
         editTextMessage = findViewById(R.id.editTextMessage)
         buttonSend = findViewById(R.id.buttonSend)
 
-        adapter = ChatAdapter(messages)
-        recyclerViewMessages.layoutManager = LinearLayoutManager(this)
-        recyclerViewMessages.adapter = adapter
+        adapter = MessageAdapter(messages)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         buttonSend.setOnClickListener {
-            val message = editTextMessage.text.toString()
-            if (message.isNotEmpty()) {
-                messages.add(message)
-                messages.add("Bot: Respuesta automática") // Simulación de respuesta del bot
+            val messageText = editTextMessage.text.toString()
+            if (messageText.isNotEmpty()) {
+                messages.add(Message(messageText, false))
+                messages.add(Message("Respuesta del bot", true)) // Simula una respuesta del bot
                 adapter.notifyDataSetChanged()
                 editTextMessage.text.clear()
-                recyclerViewMessages.scrollToPosition(messages.size - 1)
+                recyclerView.scrollToPosition(messages.size - 1)
             }
         }
     }
