@@ -14,6 +14,8 @@ class MenuActivity : AppCompatActivity() {
         val btncita = findViewById<Button>(R.id.btncita)
         val btncitapro = findViewById<Button>(R.id.btncitaprogramadas)
         val btnCancelarcita = findViewById<Button>(R.id.btnCancelarCita)
+        val btnChatbot = findViewById<Button>(R.id.btnChatbot)
+
 
 
         btncita.setOnClickListener {
@@ -26,6 +28,10 @@ class MenuActivity : AppCompatActivity() {
         }
         btnCancelarcita.setOnClickListener {
             val intent = Intent(this, SaludActivity::class.java)
+            startActivity(intent)
+        }
+        btnChatbot.setOnClickListener {
+            val intent = Intent(this, ChatbotActivity::class.java)
             startActivity(intent)
         }
 

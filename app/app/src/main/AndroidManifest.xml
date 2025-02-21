@@ -29,6 +29,7 @@
         <activity android:name=".SaludActivity" />
         <activity android:name=".BomberoActivity" />
         <activity android:name=".Administrador" />
+        <activity android:name=".ChatbotActivity" />
     </application>
 
 </manifest>
