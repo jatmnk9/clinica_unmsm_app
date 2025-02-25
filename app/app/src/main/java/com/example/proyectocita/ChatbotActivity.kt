@@ -1,45 +1,48 @@
-// archivo: app/src/main/java/com/example/proyectocita/ChatbotActivity.kt
 package com.example.proyectocita
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.proyectocita.databinding.ActivityChatbotBinding
 
 class ChatbotActivity : AppCompatActivity() {
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var editTextMessage: EditText
-    private lateinit var buttonSend: Button
+    private lateinit var binding: ActivityChatbotBinding
     private val messages = mutableListOf<Message>()
     private lateinit var adapter: MessageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chatbot)
 
-        val btnBack = findViewById<ImageButton>(R.id.btnBack)
-        btnBack.setOnClickListener { finish() }
+        // Infla la vista con View Binding
+        binding = ActivityChatbotBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        recyclerView = findViewById(R.id.recyclerViewMessages)
-        editTextMessage = findViewById(R.id.editTextMessage)
-        buttonSend = findViewById(R.id.buttonSend)
+        // Botón de retroceso
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
 
+        // Configuración del RecyclerView
         adapter = MessageAdapter(messages)
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewMessages.adapter = adapter
+        binding.recyclerViewMessages.layoutManager = LinearLayoutManager(this)
 
-        buttonSend.setOnClickListener {
-            val messageText = editTextMessage.text.toString()
-            if (messageText.isNotEmpty()) {
-                messages.add(Message(messageText, false))
-                messages.add(Message("Respuesta del bot", true)) // Simula una respuesta del bot
+        // Botón "Enviar"
+        binding.buttonSend.setOnClickListener {
+            val userInput = binding.editTextMessage.text.toString().trim()
+            if (userInput.isNotEmpty()) {
+                // Agrega el mensaje del usuario
+                messages.add(Message(userInput, isBot = false))
+
+                // Aquí podrías llamar a la API de Gemini para obtener la respuesta.
+                // Por ahora, simulamos con un texto fijo:
+                messages.add(Message("Respuesta del bot", isBot = true))
+
+                // Notifica cambios
                 adapter.notifyDataSetChanged()
-                editTextMessage.text.clear()
-                recyclerView.scrollToPosition(messages.size - 1)
+                binding.editTextMessage.text.clear()
+                binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
             }
         }
     }
