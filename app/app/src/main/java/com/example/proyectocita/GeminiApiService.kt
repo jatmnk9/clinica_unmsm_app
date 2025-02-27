@@ -1,4 +1,3 @@
-// GeminiApiService.kt
 package com.example.proyectocita.api
 
 import retrofit2.http.Body

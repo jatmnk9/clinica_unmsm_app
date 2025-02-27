@@ -1,4 +1,3 @@
-// GeminiClient.kt
 package com.example.proyectocita.api
 
 import okhttp3.OkHttpClient
