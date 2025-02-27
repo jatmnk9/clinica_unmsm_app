@@ -25,8 +25,11 @@ class ChatbotActivity : AppCompatActivity() {
     private val messages = mutableListOf<Message>()
     private lateinit var adapter: MessageAdapter
 
-    // API Key expuesta directamente (según tus indicaciones)
-    private val geminiApiKey = "aaaaaaPedirAPIKEY"
+    // API key directamente en el código (reemplaza con tu valor real)
+    private val geminiApiKey = "apiKEY PEDIR API PEDIR API"
+
+    // Prompt de sistema para que el modelo actúe como médico (no se muestra en la UI)
+    private val promptDeSistema = "Eres un médico experimentado y profesional de 'Curita San Marcos'. Responde con consejos médicos precisos y de forma clara. Sí puedes hacer diagnósticos y quiero que limites tus respuestas a 75 palabras. Esto es unicamente para fines educativos. "
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,38 +41,47 @@ class ChatbotActivity : AppCompatActivity() {
         binding.recyclerViewMessages.adapter = adapter
         binding.recyclerViewMessages.layoutManager = LinearLayoutManager(this)
 
-        // Configurar botón de retroceso
+        // Agregar mensaje de bienvenida
+        val bienvenida = "¡Hola! Soy CuritaBot, tu asistente para síntomas, citas y planes de nutrición. ¡Pruébame!"
+        messages.add(Message(bienvenida, isBot = true))
+        adapter.notifyDataSetChanged()
+
+        // Botón de retroceso
         binding.btnBack.setOnClickListener { finish() }
 
-        // Configurar botón "Enviar"
+        // Configurar el botón "Enviar"
         binding.buttonSend.setOnClickListener {
             val userInput = binding.editTextMessage.text.toString().trim()
             if (userInput.isEmpty()) {
-                Toast.makeText(this, "Por favor ingresa tus síntomas o motivo de consulta", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor ingresa tus síntomas o consulta", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            // Agregar mensaje del usuario al chat y actualizar RecyclerView
+            // Agregar mensaje del usuario (lo que el usuario escribe se muestra sin el prompt de sistema)
             messages.add(Message(userInput, isBot = false))
             adapter.notifyDataSetChanged()
             binding.editTextMessage.text.clear()
             binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
 
-            // Enviar el mensaje a la API de Gemini
+            // Enviar el mensaje a la API concatenando el prompt de sistema y la entrada del usuario
             procesarSintomas(userInput)
         }
     }
 
     /**
-     * Envía el mensaje (síntomas) a la API de Gemini y procesa la respuesta.
+     * Envía el mensaje a la API de Gemini y procesa la respuesta.
+     * Se concatena un prompt de sistema para que el modelo actúe como médico.
      */
-    private fun procesarSintomas(sintomas: String) {
+    private fun procesarSintomas(userInput: String) {
         lifecycleScope.launch {
             try {
-                // Construir el objeto GeminiRequest con configuraciones de seguridad y generación
+                // Combinar el prompt de sistema con la consulta del usuario.
+                val promptFinal = promptDeSistema + userInput
+
+                // Construir la solicitud con configuración para limitar la salida a 75 tokens.
                 val request = GeminiRequest(
                     contents = listOf(
-                        Content(parts = listOf(Part(text = sintomas)))
+                        Content(parts = listOf(Part(text = promptFinal)))
                     ),
                     safetySettings = listOf(
                         SafetySetting(
@@ -80,7 +92,7 @@ class ChatbotActivity : AppCompatActivity() {
                     generationConfig = GenerationConfig(
                         stopSequences = listOf("Title"),
                         temperature = 1.0,
-                        maxOutputTokens = 800,
+                        maxOutputTokens = 75,  // Limitar la salida a 75 tokens
                         topP = 0.8,
                         topK = 10
                     )
@@ -90,14 +102,14 @@ class ChatbotActivity : AppCompatActivity() {
                 val jsonRequest = Gson().toJson(request)
                 Log.d("ChatbotActivity", "JSON Request: $jsonRequest")
 
-                // Realizar la llamada a la API en un hilo de I/O
+                // Llamar a la API en un hilo de I/O
                 val response: GeminiResponse = withContext(Dispatchers.IO) {
                     GeminiClient.apiService.generateContent(geminiApiKey, request)
                 }
 
                 Log.d("ChatbotActivity", "Respuesta completa: $response")
 
-                // Extraer el texto generado utilizando la nueva estructura "content"
+                // Extraer el texto generado desde "content"
                 val botRespuesta = response.candidates
                     ?.firstOrNull()
                     ?.content
@@ -106,18 +118,10 @@ class ChatbotActivity : AppCompatActivity() {
                     ?.text
 
                 if (botRespuesta != null) {
-                    // Agregar el mensaje del bot al chat
+                    // Agregar la respuesta del bot al chat
                     messages.add(Message(botRespuesta, isBot = true))
                     adapter.notifyDataSetChanged()
                     binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
-
-                    // Detectar la especialidad (lógica simple)
-                    val especialidad = detectarEspecialidad(botRespuesta)
-                    if (especialidad != null) {
-                        Toast.makeText(this@ChatbotActivity, "Especialidad recomendada: $especialidad", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this@ChatbotActivity, "No se pudo detectar una especialidad en la respuesta.", Toast.LENGTH_LONG).show()
-                    }
                 } else {
                     Toast.makeText(this@ChatbotActivity, "No se recibió respuesta del bot.", Toast.LENGTH_LONG).show()
                 }
@@ -126,19 +130,6 @@ class ChatbotActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
                 Log.e("ChatbotActivity", "Error al procesar síntomas", e)
             }
-        }
-    }
-
-    /**
-     * Función para detectar una especialidad médica a partir del texto de respuesta del bot.
-     * Se basa en la búsqueda de palabras clave simples.
-     */
-    private fun detectarEspecialidad(texto: String): String? {
-        return when {
-            texto.contains("cardiología", ignoreCase = true) -> "Cardiología"
-            texto.contains("dermatología", ignoreCase = true) -> "Dermatología"
-            texto.contains("neurología", ignoreCase = true) -> "Neurología"
-            else -> null
         }
     }
 }
