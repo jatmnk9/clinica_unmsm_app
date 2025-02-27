@@ -26,10 +26,20 @@ class ChatbotActivity : AppCompatActivity() {
     private lateinit var adapter: MessageAdapter
 
     // API key directamente en el código (reemplaza con tu valor real)
-    private val geminiApiKey = "apiKEY PEDIR API PEDIR API"
+    private val geminiApiKey = "AIzaSyDCsS2S9slxcEY3AsfOYUojHipUmiTtVNU"
 
     // Prompt de sistema para que el modelo actúe como médico (no se muestra en la UI)
-    private val promptDeSistema = "Eres un médico experimentado y profesional de 'Curita San Marcos'. Responde con consejos médicos precisos y de forma clara. Sí puedes hacer diagnósticos y quiero que limites tus respuestas a 75 palabras. Esto es unicamente para fines educativos. "
+    private val promptDeSistema =
+        "Eres un médico virtual de 'Curita San Marcos'. Basándote en los síntomas proporcionados por el usuario, debes recomendar una única especialidad médica de la lista: " +
+        "Cardiología, Dermatología, Gastroenterología, Ginecología, Medicina General, Medicina Interna, Neumología, " +
+        "Neurología, Obstetricia, Odontología, Oftalmología, Otorrinolaringología, Traumatología, Pediatría, Psicología, " +
+        "Podología, Terapia Física y Rehabilitación y Urología. " +
+        "Si te pregunta por donde esta la clínica o el hospital, tu responde 'Av. Jorge Basadre Grohmann, Lima 15081, dentro de la Universidad Nacional Mayor de San Marcos'" +
+        "Si te pregunta por el número de especialidades o cuál es el nombre de las especialidades, tú di el número y mencionacelas." +
+        "Si te pregunta para que sirve cierta especialidad, tu dale la definición en una oración" + //No funciona si te olvidas de las tíldes
+        "NO respondas con explicaciones largas. Solo responde con el nombre de la especialidad que mejor se ajuste a los síntomas del usuario."
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +52,8 @@ class ChatbotActivity : AppCompatActivity() {
         binding.recyclerViewMessages.layoutManager = LinearLayoutManager(this)
 
         // Agregar mensaje de bienvenida
-        val bienvenida = "¡Hola! Soy CuritaBot, tu asistente para síntomas, citas y planes de nutrición. ¡Pruébame!"
+        val bienvenida = "¡Hola! Soy CuritaBot, estoy aquí para diagnosticarte y enviarte a una especialidad según tus síntomas. " +
+                "¿Qué síntomas tienes hoy?"
         messages.add(Message(bienvenida, isBot = true))
         adapter.notifyDataSetChanged()
 
@@ -68,6 +79,8 @@ class ChatbotActivity : AppCompatActivity() {
         }
     }
 
+
+
     /**
      * Envía el mensaje a la API de Gemini y procesa la respuesta.
      * Se concatena un prompt de sistema para que el modelo actúe como médico.
@@ -75,10 +88,40 @@ class ChatbotActivity : AppCompatActivity() {
     private fun procesarSintomas(userInput: String) {
         lifecycleScope.launch {
             try {
-                // Combinar el prompt de sistema con la consulta del usuario.
-                val promptFinal = promptDeSistema + userInput
+                // Verificar si el usuario ha indicado que no tiene más síntomas
+                val noMoreSymptoms = listOf("No", "No tengo más síntomas", "Eso es todo", "Solo eso")
+                if (noMoreSymptoms.any { it.equals(userInput, ignoreCase = true) }) {
+                    // Preguntar si el usuario quiere recibir un diagnóstico basado en síntomas previos
+                    val confirmacion = "Gracias por compartir tus síntomas. ¿Te gustaría que te recomiende una especialidad basada en lo que mencionaste?"
+                    messages.add(Message(confirmacion, isBot = true))
+                    adapter.notifyDataSetChanged()
+                    binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
+                    return@launch
+                }
 
-                // Construir la solicitud con configuración para limitar la salida a 75 tokens.
+                // Verificar si el usuario está despidiéndose o agradeciendo
+                val despedidas = listOf("Gracias", "Hasta luego", "Nos vemos", "Adiós","Adios", "Chau", "Hasta pronto", "Hasta la próxima", "Hasta la proxima", "Bye", "Bye bye")
+                if (despedidas.any { it.equals(userInput, ignoreCase = true) }) {
+                    val respuestaDespedida = "¡Gracias por usar CuritaBot! Espero haberte ayudado. Cuídate. 😊"
+                    messages.add(Message(respuestaDespedida, isBot = true))
+                    adapter.notifyDataSetChanged()
+                    binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
+                    return@launch
+                }
+
+                // Formatear la solicitud con una separación clara entre contexto y entrada del usuario
+                val promptFinal = """
+                Contexto:
+                $promptDeSistema
+
+                Síntomas reportados por el usuario:
+                $userInput
+
+                Respuesta esperada:
+                Responde con un "Recomiendo ir a" (o una oración similar) con el nombre de la especialidad médica recomendada.
+            """.trimIndent()
+
+                // Construcción de la solicitud
                 val request = GeminiRequest(
                     contents = listOf(
                         Content(parts = listOf(Part(text = promptFinal)))
@@ -90,11 +133,11 @@ class ChatbotActivity : AppCompatActivity() {
                         )
                     ),
                     generationConfig = GenerationConfig(
-                        stopSequences = listOf("Title"),
-                        temperature = 1.0,
-                        maxOutputTokens = 75,  // Limitar la salida a 75 tokens
-                        topP = 0.8,
-                        topK = 10
+                        stopSequences = listOf("\n"),
+                        temperature = 0.5,
+                        maxOutputTokens = 70,
+                        topP = 0.9,
+                        topK = 5
                     )
                 )
 
@@ -109,7 +152,7 @@ class ChatbotActivity : AppCompatActivity() {
 
                 Log.d("ChatbotActivity", "Respuesta completa: $response")
 
-                // Extraer el texto generado desde "content"
+                // Extraer la respuesta del bot
                 val botRespuesta = response.candidates
                     ?.firstOrNull()
                     ?.content
@@ -118,7 +161,6 @@ class ChatbotActivity : AppCompatActivity() {
                     ?.text
 
                 if (botRespuesta != null) {
-                    // Agregar la respuesta del bot al chat
                     messages.add(Message(botRespuesta, isBot = true))
                     adapter.notifyDataSetChanged()
                     binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
