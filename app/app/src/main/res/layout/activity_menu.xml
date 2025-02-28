@@ -33,7 +33,7 @@
         android:id="@+id/imageView"
         android:layout_width="343dp"
         android:layout_height="178dp"
-        android:layout_margin="100dp"
+        android:layout_margin="80dp"
         app:srcCompat="@drawable/group_93" />
 
     <TextView
@@ -63,7 +63,7 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:translationZ="10dp"
-        android:layout_marginTop="100dp"/>
+        android:layout_marginTop="20dp"/>
 
     <Button
         android:id="@+id/btncitaprogramadas"
@@ -89,6 +89,20 @@
         android:fontFamily="@font/semi_bold"
         android:padding="10dp"
         android:text="Cancelar cita médica"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:translationZ="10dp"
+        android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/btnChatbot"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#2260FF"
+        android:elevation="8dp"
+        android:fontFamily="@font/semi_bold"
+        android:padding="10dp"
+        android:text="Hablar con el curitabot"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:translationZ="10dp"
