@@ -15,7 +15,7 @@ class MenuActivity : AppCompatActivity() {
         val btncitapro = findViewById<Button>(R.id.btncitaprogramadas)
         val btnCancelarcita = findViewById<Button>(R.id.btnCancelarCita)
         val btnChatbot = findViewById<Button>(R.id.btnChatbot)
-
+        val btnCerrarSesion = findViewById<Button>(R.id.btnCerrarSesion)
 
 
         btncita.setOnClickListener {
@@ -33,6 +33,19 @@ class MenuActivity : AppCompatActivity() {
         btnChatbot.setOnClickListener {
             val intent = Intent(this, ChatbotActivity::class.java)
             startActivity(intent)
+        }
+        btnCerrarSesion.setOnClickListener {
+            // Limpiar el estado de la sesión
+            val sharedPreferences = getSharedPreferences("user_session", MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.clear() // Elimina todos los datos de sesión
+            editor.apply()
+
+            // Redirigir a MainActivity
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish() // Finaliza MenuActivity
         }
 
 
