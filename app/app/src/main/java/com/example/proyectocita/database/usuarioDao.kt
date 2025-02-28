@@ -20,6 +20,6 @@ interface UsuarioDao {
     suspend fun getAllUsuarios(): List<Usuario> // También especificamos List<Usuario>
 
     // Obtiene un usuario por su cédula
-    @Query("SELECT * FROM usuarios WHERE cedula = :cedula LIMIT 1")
-    suspend fun getUsuarioByCedula(cedula: String): Usuario?
+    @Query("SELECT * FROM usuarios WHERE nombres = :nombres LIMIT 1")
+    suspend fun getUsuarioByCedula(nombres: String): Usuario?
 }

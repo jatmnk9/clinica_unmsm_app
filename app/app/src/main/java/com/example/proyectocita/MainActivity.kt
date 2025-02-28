@@ -22,8 +22,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val etUsername = findViewById<EditText>(R.id.etUsername)
-        val etPassword = findViewById<EditText>(R.id.etPassword)
+        val etUsername = findViewById<EditText>(R.id.etUsername) // Correo (aunque se llame etUsername)
+        val etPassword = findViewById<EditText>(R.id.etPassword) // Contraseña
         val btnLogin = findViewById<Button>(R.id.btnLogin)
         val tvCreatePassword = findViewById<TextView>(R.id.tvCreatePassword)
 
@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
         val db = CitaDatabase.getInstance(this)
 
         btnLogin.setOnClickListener {
-            val username = etUsername.text.toString().trim()
-            val password = etPassword.text.toString().trim()
+            val username = etUsername.text.toString().trim() // Correo (aunque se llame username)
+            val password = etPassword.text.toString().trim() // Contraseña
 
             if (username.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Por favor, complete todos los campos", Toast.LENGTH_SHORT).show()
@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             // Verificar si el usuario es "Administrador"
-            if (username == "Administrador" && password == "1234") {
-                guardarUsuarioEnSesion("admin", true) // Se guarda como "admin"
+            if (username == "admin@unmsm.edu.pe" && password == "1234") {
+                guardarUsuarioEnSesion("admin@unmsm.edu.pe", true) // Guardar correo de admin
                 startActivity(Intent(this@MainActivity, Administrador::class.java))
                 finish()
                 return@setOnClickListener
@@ -53,11 +53,11 @@ class MainActivity : AppCompatActivity() {
             // Verificar usuario en la base de datos
             lifecycleScope.launch {
                 val usuario = withContext(Dispatchers.IO) {
-                    db.usuarioDao().getUsuarioByCedula(password)
+                    db.usuarioDao().getUsuarioByCedula(username) // Buscar por correo
                 }
 
-                if (usuario != null && usuario.nombres.equals(username, ignoreCase = true)) {
-                    guardarUsuarioEnSesion(usuario.nombres, false) // Guardamos la cédula
+                if (usuario != null && usuario.cedula == password) { // Comparar contraseña
+                    guardarUsuarioEnSesion(usuario.nombres, false) // Guardar correo del usuario
                     runOnUiThread {
                         Toast.makeText(this@MainActivity, "Inicio de sesión exitoso", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this@MainActivity, MenuActivity::class.java))
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity() {
                     }
                 } else {
                     runOnUiThread {
-                        Toast.makeText(this@MainActivity, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Correo o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -76,9 +76,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun guardarUsuarioEnSesion(cedula: String, esAdministrador: Boolean) {
+    private fun guardarUsuarioEnSesion(correo: String, esAdministrador: Boolean) {
         val editor = sharedPreferences.edit()
-        editor.putString("usuarioCedula", cedula) // Guardamos la cédula en lugar de ID
+        editor.putString("usuarioCedula", correo) // Guardar el correo en "usuarioCedula"
         editor.putBoolean("esAdministrador", esAdministrador)
         editor.apply()
     }
