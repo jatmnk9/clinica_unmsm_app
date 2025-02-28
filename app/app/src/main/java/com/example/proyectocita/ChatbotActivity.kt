@@ -52,7 +52,7 @@ class ChatbotActivity : AppCompatActivity() {
         binding.recyclerViewMessages.layoutManager = LinearLayoutManager(this)
 
         // Agregar mensaje de bienvenida
-        val bienvenida = "¡Hola! Soy CuritaBot, estoy aquí para diagnosticarte y enviarte a una especialidad según tus síntomas. " +
+        val bienvenida = "¡Hola! Soy CuritaBot \uD83E\uDD16 , estoy aquí para diagnosticarte \uD83D\uDCD2 y enviarte a una especialidad según tus síntomas \uD83D\uDC68\u200D⚕\uFE0F\uD83D\uDC69\u200D⚕\uFE0F. " +
                 "¿Qué síntomas tienes hoy?"
         messages.add(Message(bienvenida, isBot = true))
         adapter.notifyDataSetChanged()
@@ -64,7 +64,7 @@ class ChatbotActivity : AppCompatActivity() {
         binding.buttonSend.setOnClickListener {
             val userInput = binding.editTextMessage.text.toString().trim()
             if (userInput.isEmpty()) {
-                Toast.makeText(this, "Por favor ingresa tus síntomas o consulta", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor ingresa tus síntomas o consulta ", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -102,7 +102,7 @@ class ChatbotActivity : AppCompatActivity() {
                 // Verificar si el usuario está despidiéndose o agradeciendo
                 val despedidas = listOf("Gracias", "Hasta luego", "Nos vemos", "Adiós","Adios", "Chau", "Hasta pronto", "Hasta la próxima", "Hasta la proxima", "Bye", "Bye bye")
                 if (despedidas.any { it.equals(userInput, ignoreCase = true) }) {
-                    val respuestaDespedida = "¡Gracias por usar CuritaBot! Espero haberte ayudado. Cuídate. 😊"
+                    val respuestaDespedida = "¡Gracias por usar CuritaBot! \uD83E\uDD16 Espero haberte ayudado. Cuídate. 😊"
                     messages.add(Message(respuestaDespedida, isBot = true))
                     adapter.notifyDataSetChanged()
                     binding.recyclerViewMessages.scrollToPosition(messages.size - 1)
