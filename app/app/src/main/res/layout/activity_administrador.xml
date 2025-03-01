@@ -78,4 +78,18 @@
         android:translationZ="10dp"
         android:layout_marginTop="15dp" />
 
+    <Button
+        android:id="@+id/btnCerrarS"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#2260FF"
+        android:elevation="20dp"
+        android:fontFamily="@font/semi_bold"
+        android:padding="10dp"
+        android:text="Cerrar sesión"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:translationZ="10dp" />
+
 </LinearLayout>

@@ -56,21 +56,21 @@
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#2260FF"
-        android:elevation="12dp"
+        android:elevation="20dp"
         android:fontFamily="@font/semi_bold"
         android:padding="10dp"
         android:text="Agendar Cita"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         android:translationZ="10dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="80dp"/>
 
     <Button
         android:id="@+id/btncitaprogramadas"
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#2260FF"
-        android:elevation="12dp"
+        android:elevation="20dp"
         android:fontFamily="@font/semi_bold"
         android:padding="10dp"
         android:text="Ver tus citas programadas"
@@ -85,7 +85,7 @@
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#2260FF"
-        android:elevation="8dp"
+        android:elevation="20dp"
         android:fontFamily="@font/semi_bold"
         android:padding="10dp"
         android:text="Cancelar cita médica"
@@ -99,7 +99,7 @@
         android:layout_width="329dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#2260FF"
-        android:elevation="8dp"
+        android:elevation="20dp"
         android:fontFamily="@font/semi_bold"
         android:padding="10dp"
         android:text="Hablar con el curitabot"
@@ -107,5 +107,19 @@
         android:textSize="18sp"
         android:translationZ="10dp"
         android:layout_marginTop="15dp" />
+
+    <Button
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="329dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="#2260FF"
+        android:elevation="20dp"
+        android:fontFamily="@font/semi_bold"
+        android:padding="10dp"
+        android:text="Cerrar sesión"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:translationZ="10dp" />
 
 </LinearLayout>

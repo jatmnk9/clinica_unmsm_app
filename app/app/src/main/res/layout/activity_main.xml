@@ -123,19 +123,7 @@
     </androidx.cardview.widget.CardView>
 
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="78dp"
-        android:background="@android:color/transparent"
-        android:fontFamily="@font/regular"
-        android:letterSpacing="-0.01"
-        android:text="Olvidé mi contraseña"
-        android:textAllCaps="false"
-        android:textColor="#2260FF"
-        android:textSize="14sp"
-        tools:layout_editor_absoluteX="225dp"
-        tools:layout_editor_absoluteY="324dp" />
+
 
     <Button
         android:id="@+id/btnLogin"
@@ -151,7 +139,9 @@
         app:cornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="403dp" />
+        tools:layout_editor_absoluteY="403dp"
+        android:layout_marginTop="30dp"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
