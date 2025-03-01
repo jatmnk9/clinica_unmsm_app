@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:background="#2260FF"
         android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:paddingBottom="20dp"
+        android:padding="30dp">
 
         <!-- Botón de retroceso -->
         <ImageButton

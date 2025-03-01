@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#2260FF"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
+        android:padding="30dp">
 
         <!-- Botón de retroceso -->
         <ImageButton
@@ -19,8 +18,8 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_alignParentStart="true"
-            android:layout_marginStart="16dp"
             android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
