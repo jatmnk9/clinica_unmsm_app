@@ -1,5 +1,6 @@
 package com.example.proyectocita
 
+import android.content.Intent
 import CitaAdapter
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -23,8 +24,22 @@ class CitasActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.citas_activity)
+
         val btnBack = findViewById<ImageButton>(R.id.btnBack)
-        btnBack.setOnClickListener { finish() }
+        btnBack.setOnClickListener {
+            // Verificar si el usuario es administrador
+            if (verificarSiEsAdministrador()) {
+                // Redirigir al menú del administrador
+                val intent = Intent(this, Administrador::class.java) // Cambia "AdminMenuActivity" por el nombre de tu actividad del administrador
+                startActivity(intent)
+            } else {
+                // Redirigir al menú del paciente
+                val intent = Intent(this, MenuActivity::class.java)
+                startActivity(intent)
+            }
+            finish() // Cierra la actividad actual (opcional)
+        }
+
         // Inicializar SharedPreferences
         sharedPreferences = getSharedPreferences("MiAppPrefs", MODE_PRIVATE)
 
