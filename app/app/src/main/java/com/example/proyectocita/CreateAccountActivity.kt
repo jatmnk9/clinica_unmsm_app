@@ -3,6 +3,7 @@ package com.example.proyectocita
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,8 @@ class CreateAccountActivity : AppCompatActivity() {
         val spBloodType = findViewById<EditText>(R.id.spBloodType) // nombre
 
         val btnSave = findViewById<Button>(R.id.btnSave)
+        val btnRegresar = findViewById<ImageButton>(R.id.btnRegresar)
+        btnRegresar.setOnClickListener { finish() }
 
         // Deshabilitar el campo de código por defecto
         etCellphone.isEnabled = false
